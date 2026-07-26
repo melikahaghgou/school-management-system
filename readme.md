@@ -6,17 +6,23 @@ There is a menu to use that instructs them on what to do. The program is also ma
 
 The School Management System uses a way of making programs called object-oriented programming, This means the School Management System contains parts that operate together to support the entire system.This project stores its data in the JSON file so it can remember things later.
 
-## How to use
+## Installation
 
-1. First you need to download the project files which are `main.py` and `01.json`.
+1. Clone the repository :
+   https://github.com/melikahaghgou/school-management-system
 
-2. Next you have to put these two files in the folder.
+2. Navigate to the project directory:
+      cd school-management-system
+Ensure you have Python installed on your system. You can verify this by running python --version in your terminal.
+
 
 3. Now you should open VS Code. Then open the folder that has these files.
 
 4. After that you need to open the terminal in VS Code by pressing Ctrl and the backtick key at the time.
 
-5. Then you have to type the command, which is `python main.py` and press the Enter key.
+5.Once you are in the project directory, run your Python file by typing the following command and pressing Enter:
+
+python your_filename.py
 
 The program is going to start. You will see the menu, for the program.
 
