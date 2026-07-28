@@ -1,47 +1,78 @@
 import json
+
+
 class Course:
+    """Represents a school course with an id, name, and unit count."""
+
     id: int = 0
     name: str = ""
     units: int = 0
     scores: float = 0
 
     def __init__(self, id: int, name: str, units: int):
+        """Create a new course instance.
+
+        :param id: Unique course identifier.
+        :param name: Course name.
+        :param units: Number of units for the course.
+        """
         self.id = id
         self.name = name
         self.units = units
 
     def __str__(self):
+        """Return a readable string representation for printing."""
         return f"{self.id}\t{self.name}\t{self.units}"
 
     def __eq__(self, other):
+        """Compare courses by id.
+
+        :param other: Another Course object or an id value.
+        """
         if isinstance(other, Course):
             return self.id == other.id
         return self.id == other
 
     def edit_info(self, new_name: str, new_units: int) -> None:
+        """Update the course name and units.
+
+        :param new_name: New course name.
+        :param new_units: New number of units.
+        """
         self.name = new_name
         self.units = new_units
 
 
 class Student:
+    """Represents a student and the courses they are enrolled in."""
+
     id: int = 0
     name: str = ""
     family: str = ""
     courses: list[Course]
 
     def __init__(self, id: int, name: str, family: str):
+        """Create a new student instance.
+
+        :param id: Unique student identifier.
+        :param name: Student first name.
+        :param family: Student last name.
+        """
         self.id = id
         self.name = name
         self.family = family
         self.courses = []
 
     def __str__(self):
+        """Return a readable string representation for printing."""
         return f"{self.id}\t{self.name}\t{self.family}"
 
     def __eq__(self, other):
+        """Compare students by id."""
         return (self.id == other.id)
     
     def info(self) -> None:
+        """Print detailed student information, including enrolled courses."""
         print(f"id: {self.id}")
         print(f"name: {self.name}")
         print(f"family: {self.family}")
@@ -49,45 +80,75 @@ class Student:
             print(f"{c.id}\t{c.name}\t{c.scores}")
     
     def edit_info(self, new_name: str, new_family: str) -> None:
+        """Update the student's name and family name.
+
+        :param new_name: New first name.
+        :param new_family: New last name.
+        """
         self.name = new_name
         self.family = new_family
+
 
 class Teacher:
+    """Represents a teacher and the courses they can teach."""
+
     id: int = 0
     name: str = ""
     family: str = ""
     courses: list[Course]
 
     def __init__(self, id: int, name: str, family: str):
+        """Create a new teacher instance.
+
+        :param id: Unique teacher identifier.
+        :param name: Teacher first name.
+        :param family: Teacher last name.
+        """
         self.id = id
         self.name = name
         self.family = family
         self.courses = []
 
     def __str__(self):
+        """Return a readable string representation for printing."""
         return f"{self.id}\t{self.name}\t{self.family}"
 
     def __eq__(self, other):
+        """Compare teachers by id."""
         return (self.id == other.id)
     
     def info(self) -> None:
+        """Print detailed teacher information, including assigned courses."""
         print(f"id: {self.id}")
         print(f"name: {self.name}")
         print(f"family: {self.family}")
         for c in self.courses:
             print(f"{c.id}\t{c.name}\t{c.scores}")
+
     def edit_info(self, new_name: str, new_family: str) -> None:
+        """Update the teacher's name and family name.
+
+        :param new_name: New first name.
+        :param new_family: New last name.
+        """
         self.name = new_name
         self.family = new_family
 
+
 class Classroom:
+    """Represents a classroom, its assigned course, teacher, and students."""
+
     id: int = 0
     name: str = ""
-    teacher: Teacher=None
-    course: Course=None
+    teacher: Teacher = None
+    course: Course = None
 
+    def __init__(self, id: int, name: str):
+        """Create a new classroom instance.
 
-    def __init__(self, id: int,name: str):
+        :param id: Unique classroom identifier.
+        :param name: Classroom name.
+        """
         self.id = id
         self.name = name
         self.students: list[Student] = []
@@ -96,6 +157,7 @@ class Classroom:
         self.selected_classroom: Classroom = None
 
     def info(self) -> None:
+        """Print complete classroom information."""
         print(f"classroom id: {self.id}")
         print(f"classroom name: {self.name}")
         
@@ -115,35 +177,53 @@ class Classroom:
         else:
             for s in self.students:
                 print(f"    {s.id}\t{s.name} {s.family}")
+
     def __eq__(self, other):
+        """Compare classrooms by id."""
         if isinstance(other, Classroom):
             return self.id == other.id
         return self.id == other
+
     def change_classroom_course(self, new_course: Course) -> None:
+        """Change the classroom course and keep only matching students.
+
+        :param new_course: The new course to assign to the classroom.
+        """
         self.course = new_course
         if self.teacher and new_course not in self.teacher.courses:
             self.teacher = None
             print("None")
-        new_student=[]
+        new_student = []
         for s in self.students:
             if new_course in s.courses:
                 new_student.append(s)
-        self.students=new_student
+        self.students = new_student
         print("course changed")
 
-    def change_classroom_teacher(self, new_teacher:Teacher)->None:
+    def change_classroom_teacher(self, new_teacher: Teacher) -> None:
+        """Assign a new teacher to the classroom if the teacher can teach the course.
+
+        :param new_teacher: Teacher to assign.
+        """
         if self.course not in new_teacher.courses:
             print("this teacher doesnt teach this course")
             return
-        self.teacher=new_teacher
+        self.teacher = new_teacher
         print("teacher changed")
-    def add_student_to_classroom(self, student:Student) -> None:
+
+    def add_student_to_classroom(self, student: Student) -> None:
+        """Add a student to the classroom if they are not already present.
+
+        :param student: Student to add.
+        """
         if student in self.students:
             print("student already in classroom")
             return
         self.students.append(student)
         print("student added")
+
     def remove_student_from_classroom(self) -> None:
+        """Remove a student from the classroom."""
         
         if student in self.students:
             self.students.remove(student)
@@ -152,37 +232,46 @@ class Classroom:
             print("student not found")
 
 
-
 class School:
+    """Main container class that stores courses, students, teachers, and classrooms."""
+
     name: str = ""
     courses: list[Course] = []
     students: list[Student] = []
     teachers: list[Teacher] = []
-    classrooms: list[Classroom]=[]
-    selected_students: Student= None
+    classrooms: list[Classroom] = []
+    selected_students: Student = None
     
-
     def __init__(self, name: str):
+        """Create a school object with empty collections.
+
+        :param name: School name.
+        """
         self.name = name
         self.courses = []
-        self.students= []
-        self.teachers=[]
+        self.students = []
+        self.teachers = []
         self.classrooms = []
-        self.selected_students:Student=None
-        self.selected_teachers:Teacher=None
-        self.selected_courses:Course=None
+        self.selected_students: Student = None
+        self.selected_teachers: Teacher = None
+        self.selected_courses: Course = None
         self.selected_classroom: Classroom = None
     
-    
     def print_students(self) -> None:
+        """Print a short list of all students."""
         for s in self.students:
             print(f"ID: {s.id} | Name: {s.name} {s.family} | Courses: {s.courses}")
 
     def print_classrooms(self):
+        """Print a short list of all classrooms."""
         for cl in self.classrooms:
             print(f"{cl.id}\t{cl.name}")
-    def remove_classroom(self, id: int):
 
+    def remove_classroom(self, id: int):
+        """Remove a classroom by id.
+
+        :param id: Classroom id to remove.
+        """
         search_classroom = Classroom(id, None, None)
         if search_classroom not in self.classrooms:
             print("classroom not found")
@@ -190,8 +279,12 @@ class School:
         self.classrooms.remove(search_classroom)
         print("classroom deleted")
 
-
     def add_student(self, student: Student) -> None:
+        """Add a student if the id is not already used.
+
+        :param student: Student object to add.
+        :return: True if added, False if duplicate id exists.
+        """
         for st in self.students:
             if st.id == student.id:
                 print("this student id already exists.")
@@ -200,6 +293,10 @@ class School:
         return True
 
     def edit_student(self, student: Student) -> None:
+        """Replace an existing student object with an updated one.
+
+        :param student: Updated student object.
+        """
         if student in self.students:
             i = self.students.index(student) 
             self.students[i] = student 
@@ -208,6 +305,10 @@ class School:
             print("student not found")
 
     def remove_student(self, id: int) -> None:
+        """Remove a student by id if the student is not assigned to a classroom.
+
+        :param id: Student id to remove.
+        """
         search_student = Student(id, "", "")
         if search_student not in self.students:
             print("student not found")
@@ -218,11 +319,16 @@ class School:
                 return
 
     def print_courses(self) -> None:
+        """Print a short list of all courses."""
         for c in self.courses:
             print(f"ID: {c.id} | Name: {c.name} | Units: {c.units}")
 
-
     def add_course(self, course: Course) -> None:
+        """Add a course if the id is not already used.
+
+        :param course: Course object to add.
+        :return: True if added, False if duplicate id exists.
+        """
         for c in self.courses:
             if c.id == course.id:
                 return False
@@ -230,14 +336,22 @@ class School:
         return True
 
     def edit_course(self, course: Course) -> None:
+        """Replace an existing course object with an updated one.
+
+        :param course: Updated course object.
+        """
         if course in self.courses:
             i = self.courses.index(course) 
             self.courses[i] = course 
             print("course updated")
         else:
             print("course not found")
-    def remove_course(self, id: int) -> None:
 
+    def remove_course(self, id: int) -> None:
+        """Remove a course by id if it is not assigned to any classroom.
+
+        :param id: Course id to remove.
+        """
         search_course = Course(id, "", 0)
         if search_course not in self.courses:
             print("course not found")
@@ -250,19 +364,28 @@ class School:
         print("course deleted")
 
     def print_teachers(self) -> None:
+        """Print a short list of all teachers."""
         for t in self.teachers:
             print(f"ID: {t.id} | Name: {t.name} {t.family} | Courses: {t.courses}")
 
-
     def add_teacher(self, teacher: Teacher) -> None:
+        """Add a teacher if the id is not already used.
+
+        :param teacher: Teacher object to add.
+        :return: True if added, False if duplicate id exists.
+        """
         for t in self.teachers:
             if t.id == teacher.id:
                 print("this teacher id already exists.")
             return False
         self.teachers.append(teacher)
         return True
-    def edit_teacher(self, teacher: Teacher) -> None:
 
+    def edit_teacher(self, teacher: Teacher) -> None:
+        """Replace an existing teacher object with an updated one.
+
+        :param teacher: Updated teacher object.
+        """
         if teacher in self.teachers:
             i = self.teachers.index(teacher) 
             self.teachers[i] = teacher 
@@ -271,6 +394,10 @@ class School:
             print("teacher not found")
 
     def remove_teacher(self, id: int) -> None:
+        """Remove a teacher by id if possible.
+
+        :param id: Teacher id to remove.
+        """
         search_teacher = Student(id, "", "")
         if search_teacher not in self.teachers:
             print("teacher not found")
@@ -280,7 +407,9 @@ class School:
                 print("teacher is in a classroom, cannot delete")
                 return
         self.teachers.remove(search_teacher)
+
     def load_data(self):
+        """Load school data from the JSON file into memory."""
         file = open("01.json", "rt")
         f = file.read()
         data = json.loads(f)
@@ -310,13 +439,14 @@ class School:
                 score = item[1]
 
                 if cid in self.courses:
-                    idx=self.courses.index(cid)
-                    base=self.courses[idx] 
+                    idx = self.courses.index(cid)
+                    base = self.courses[idx] 
                     new_c = Course(base.id, base.name, base.units)
                     new_c.scores = score
                     stu.courses.append(new_c)
             
             self.students.append(stu) 
+        
         for cl in data["classrooms"]:
             classroom = Classroom(cl["id"], cl["name"])
             cid = cl["course"]
@@ -329,10 +459,10 @@ class School:
             if tid is not None:
                 search_t = Teacher(tid, "", "")
                 if search_t in self.teachers:
-                    idx= self.teachers.index(search_t)
-                    classroom.teacher=self.teachers[idx]
+                    idx = self.teachers.index(search_t)
+                    classroom.teacher = self.teachers[idx]
             else:
-                classroom.teacher=None
+                classroom.teacher = None
 
             for sid in cl["students"]:
                 search_s = Student(sid, "", "")
@@ -342,20 +472,20 @@ class School:
 
             self.classrooms.append(classroom)
         
-        
     def save_data(self):
-        data={
-            "students":[],
-            "courses":[],
-            "teachers":[],
-            "classrooms":[]
+        """Save all current school data into the JSON file."""
+        data = {
+            "students": [],
+            "courses": [],
+            "teachers": [],
+            "classrooms": []
         }
 
         for c in self.courses:
             data["courses"].append({
-            "id":c.id,
-                "name":c.name,
-                "units":c.units
+                "id": c.id,
+                "name": c.name,
+                "units": c.units
             })
 
         for s in self.students:
@@ -398,10 +528,14 @@ class School:
                 "students": classroom_students
             })
 
-        file=open("01.json","w")
+        file = open("01.json", "w")
         json.dump(data, file)
         file.close()
 
+
+# ----------------------------
+# Main application loop
+# ----------------------------
 
 level = "root"
 sc1 = School("sama")
@@ -409,6 +543,7 @@ sc1.load_data()
 
 while True:
     if level == "root":
+        # Main menu
         print("1- students")
         print("2- teachers")
         print("3- courses")
@@ -428,7 +563,9 @@ while True:
             sc1.save_data()
         elif cmd == 0:
             break
+
     elif level == "students":
+        # Students menu
         print("1- show students")
         print("2- add student")
         print("3- edit student")
@@ -473,14 +610,15 @@ while True:
             if search_st in sc1.students:
                 idx = sc1.students.index(search_st)
                 sc1.selected_students = sc1.students[idx]
-                level="students_select"
+                level = "students_select"
             else:
                 print("students not found")
                 
-                
         elif cmd == 0:
             level = "root"
-    elif level=="students_select":
+
+    elif level == "students_select":
+        # Selected student menu
         print("1- info")
         print("2- show courses")
         print("3- add course")
@@ -489,37 +627,31 @@ while True:
         print("0- back")
         
         cmd = int(input(">>: "))
-        if cmd==1:
+        if cmd == 1:
             sc1.selected_students.info()
            
-        elif cmd==2:
+        elif cmd == 2:
             pass
-        elif cmd==3:
-#            sc1.print_courses()
-#            cid=int(input("course id: "))
-#            search_course= Course(cid,"",0)
-#            if search_course in sc1.courses:
-#                target= sc1.courses[sc1.courses.index(search_course)]
-#                sc1.selected_students.courses.append(target)
+        elif cmd == 3:
             for c in sc1.courses:
                 if c not in sc1.selected_students.courses:
                     print(c)
-            cid=int(input("course id: "))
-            search_course= Course(cid,"",0)
+            cid = int(input("course id: "))
+            search_course = Course(cid, "", 0)
             if search_course not in sc1.selected_students.courses:
-                target= sc1.courses[sc1.courses.index(search_course)]
+                target = sc1.courses[sc1.courses.index(search_course)]
                 sc1.selected_students.courses.append(target)
-                
 
-        elif cmd==4:
+        elif cmd == 4:
             for c in sc1.selected_students.courses:
                 print(c)
-            cid=int(input("course id: "))
-            search_course= Course(cid,"",0)
+            cid = int(input("course id: "))
+            search_course = Course(cid, "", 0)
             if search_course in sc1.selected_students.courses:
-                target= sc1.courses[sc1.courses.index(search_course)]
+                target = sc1.courses[sc1.courses.index(search_course)]
                 sc1.selected_students.courses.remove(target)
-        elif cmd==5:
+
+        elif cmd == 5:
             for c in sc1.selected_students.courses:
                 print(f"{c.id}\t{c.name}\t{c.scores}")
 
@@ -531,11 +663,11 @@ while True:
                 new_score = float(input("score: "))
                 sc1.selected_students.courses[idx].scores = new_score
 
-        elif cmd==0:
+        elif cmd == 0:
             level = "students"
 
-        
     elif level == "teachers":
+        # Teachers menu
         print("1- show teachers")
         print("2- add teacher")
         print("3- edit teacher")
@@ -543,7 +675,6 @@ while True:
         print("5- select teacher")
         print("0- back")
         cmd = int(input(">>: "))
-
 
         if cmd == 1:
             sc1.print_teachers()
@@ -581,14 +712,15 @@ while True:
             if search_tc in sc1.teachers:
                 idx = sc1.teachers.index(search_tc)
                 sc1.selected_teachers = sc1.teachers[idx]
-                level="teachers_select"
+                level = "teachers_select"
             else:
                 print("teacher not found")
                 
-                
         elif cmd == 0:
             level = "root"
+
     elif level == "teachers_select":
+        # Selected teacher menu
         print("1- info")
         print("2- show courses")
         print("3- add course")
@@ -641,7 +773,9 @@ while True:
 
         elif cmd == 0:
             level = "teachers"
+
     elif level == "courses":
+        # Courses menu
         print("1- show courses")
         print("2- add course")
         print("3- edit course")
@@ -682,7 +816,9 @@ while True:
             pass
         elif cmd == 0:
             level = "root"
+
     elif level == "classrooms":
+        # Classrooms menu
         print("1- show classrooms")
         print("2- add classroom")
         print("3- edit classroom")
@@ -693,26 +829,26 @@ while True:
         if cmd == 1:
             sc1.print_classrooms()
         elif cmd == 2:
-            id=int(input("classroom id: "))
-            name=input("classroom name: ")
-            classroom=Classroom(id,name)
+            id = int(input("classroom id: "))
+            name = input("classroom name: ")
+            classroom = Classroom(id, name)
             print("select course: ")
             sc1.print_courses()
-            cid=int(input("course id: "))
-            search_course=Course(cid,"",0)
+            cid = int(input("course id: "))
+            search_course = Course(cid, "", 0)
             if search_course in sc1.courses:
-                classroom.course=sc1.courses[sc1.courses.index(search_course)]
+                classroom.course = sc1.courses[sc1.courses.index(search_course)]
 
                 print("available teachers: ")
-                available_teachers=[]
+                available_teachers = []
                 for t in sc1.teachers:
                     if search_course in t.courses:
                         print(t)
                         available_teachers.append(t)
-                tid=int(input("teacher id: "))
-                search_teacher= Teacher(tid , "","")
+                tid = int(input("teacher id: "))
+                search_teacher = Teacher(tid, "", "")
                 if search_teacher in available_teachers:
-                    classroom.teacher=available_teachers[available_teachers.index(search_teacher)]
+                    classroom.teacher = available_teachers[available_teachers.index(search_teacher)]
             if classroom.teacher and classroom.course:
                 sc1.classrooms.append(classroom)
 
@@ -722,8 +858,8 @@ while True:
                     if c.id == classroom.course.id and c.scores < 10:
                         print(s)
             while True:
-                sid=int(input("students id: "))
-                if sid==0:
+                sid = int(input("students id: "))
+                if sid == 0:
                     break
                 search_s = Student(sid, "", "")
                 if search_s in sc1.students:
@@ -737,9 +873,9 @@ while True:
         elif cmd == 3:
             id = int(input("id: "))
             for cl in sc1.classrooms:
-                if cl.id== id:
-                    new_name= input("new name: ")
-                    cl.name=new_name
+                if cl.id == id:
+                    new_name = input("new name: ")
+                    cl.name = new_name
                     print(f"new name: {new_name}")
                     break
         elif cmd == 4:
@@ -756,7 +892,9 @@ while True:
                 print("classroom not found")
         elif cmd == 0:
             level = "root"
-    elif level=="classrooms_select":
+
+    elif level == "classrooms_select":
+        # Selected classroom menu
         print("1- show info")
         print("2- change courses")
         print("3- change teacher")
@@ -776,8 +914,6 @@ while True:
             if search_course in sc1.courses:
                 target_course = sc1.courses[sc1.courses.index(search_course)]
                 sc1.selected_classroom.change_classroom_course(target_course)
-
-                #sc1.change_classroom_course(sc1.selected_classroom, target_course)
             else:
                 print("Course not found.")
         elif cmd == 3:
@@ -838,4 +974,5 @@ while True:
             else:
                 print("student not found")
         elif cmd == 0:
-            level="classrooms"
+            level = "classrooms"
+

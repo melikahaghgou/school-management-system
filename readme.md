@@ -12,13 +12,15 @@ The School Management System uses a way of making programs called object-oriente
    https://github.com/melikahaghgou/school-management-system
 
 2. Navigate to the project directory:
+   ```bash
       cd school-management-system
+   ```
 Ensure you have Python installed on your system. You can verify this by running python --version in your terminal.
 
 
-3. Now you should open VS Code. Then open the folder that has these files.
+1. Now you should open VS Code. Then open the folder that has these files.
 
-4. After that you need to open the terminal in VS Code by pressing Ctrl and the backtick key at the time.
+2. After that you need to open the terminal in VS Code by pressing Ctrl and the backtick key at the time.
 
 5.Once you are in the project directory, run your Python file by typing the following command and pressing Enter:
 
@@ -65,9 +67,7 @@ Or
 
 It is the same for courses and classrooms.
 
-Options Explained:
-
--Menu Options
+Options Explained:  
 
 Show: displays all records for the selected section.  
 Add: creates a new record.  
