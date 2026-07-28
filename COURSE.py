@@ -18,6 +18,10 @@ class Course:
             return self.id == other.id
         return self.id == other
 
+    def edit_info(self, new_name: str, new_units: int) -> None:
+        self.name = new_name
+        self.units = new_units
+
 
 class Student:
     id: int = 0
@@ -43,6 +47,10 @@ class Student:
         print(f"family: {self.family}")
         for c in self.courses:
             print(f"{c.id}\t{c.name}\t{c.scores}")
+    
+    def edit_info(self, new_name: str, new_family: str) -> None:
+        self.name = new_name
+        self.family = new_family
 
 class Teacher:
     id: int = 0
@@ -68,6 +76,9 @@ class Teacher:
         print(f"family: {self.family}")
         for c in self.courses:
             print(f"{c.id}\t{c.name}\t{c.scores}")
+    def edit_info(self, new_name: str, new_family: str) -> None:
+        self.name = new_name
+        self.family = new_family
 
 class Classroom:
     id: int = 0
@@ -208,7 +219,8 @@ class School:
 
     def print_courses(self) -> None:
         for c in self.courses:
-            print(c)
+            print(f"ID: {c.id} | Name: {c.name} | Units: {c.units}")
+
 
     def add_course(self, course: Course) -> None:
         for c in self.courses:
@@ -239,7 +251,8 @@ class School:
 
     def print_teachers(self) -> None:
         for t in self.teachers:
-            print(t)
+            print(f"ID: {t.id} | Name: {t.name} {t.family} | Courses: {t.courses}")
+
 
     def add_teacher(self, teacher: Teacher) -> None:
         for t in self.teachers:
@@ -258,7 +271,6 @@ class School:
             print("teacher not found")
 
     def remove_teacher(self, id: int) -> None:
-        
         search_teacher = Student(id, "", "")
         if search_teacher not in self.teachers:
             print("teacher not found")
@@ -439,7 +451,17 @@ while True:
 
             sc1.add_student(Student(id, name, family))
         elif cmd == 3:
-            pass
+            sid = int(input("enter student id to edit: "))
+            search_s = Student(sid, "", "")
+            if search_s in sc1.students:
+                idx = sc1.students.index(search_s)
+                target_student = sc1.students[idx]
+            
+                new_name = input("new name: ")
+                new_family = input("new family: ")
+                target_student.edit_info(new_name, new_family)
+            else:
+                print("student not found")
         elif cmd == 4:
             id = int(input("id: "))
             sc1.remove_student(id)
@@ -538,7 +560,17 @@ while True:
 
             sc1.add_teacher(Teacher(id, name, family))
         elif cmd == 3:
-            pass
+            tid = int(input("enter teacher id to edit: "))
+            search_t = Teacher(tid, "", "")
+            if search_t in sc1.teachers:
+                idx = sc1.teachers.index(search_t)
+                target_teacher = sc1.teachers[idx]
+            
+                new_name = input("new name: ")
+                new_family = input("new family: ")
+                target_teacher.edit_info(new_name, new_family)
+            else:
+                print("teacher not found")
         elif cmd == 4:
             id = int(input("id: "))
             sc1.remove_teacher(id)
@@ -632,7 +664,17 @@ while True:
 
             sc1.add_course(Course(id, name, family))
         elif cmd == 3:
-            pass
+            cid = int(input("enter course id to edit: "))
+            search_c = Course(cid, "", 0)
+            if search_c in sc1.courses:
+                idx = sc1.courses.index(search_c)
+                target_course = sc1.courses[idx]
+            
+                new_name = input("enter new name: ")
+                new_units = int(input("enter new units: "))           
+                target_course.edit_info(new_name, new_units)
+            else:
+                print("course not found")
         elif cmd == 4:
             id = int(input("id: "))
             sc1.remove_course(id)
